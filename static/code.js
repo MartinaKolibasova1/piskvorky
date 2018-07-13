@@ -17,7 +17,13 @@ function markbox(cell) {
         document.getElementById(cell.id).style.color = 'red';
     }
     moves.push(cell.id);
-    sendRequest(moves);
+    $.ajax({
+        type: 'POST',
+        url: 'http://localhost:5000/moves',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify({ moves: moves }),
+        dataType: 'json',
+    })
         .done(function(res) {
             var pole = res.moves;
             var length = res.moves.length;
@@ -34,9 +40,11 @@ function markbox(cell) {
                             break;
                         case -2:
                         moves = [];
-                            sendRequest(moves);
+                            sendRequest(moves)
                             if (alert('Smola prehral si!')) {
+
                             } else window.location.reload();
+
                             break;
                         case -3:
                             alert('REMIZA');

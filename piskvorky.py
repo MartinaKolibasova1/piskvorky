@@ -259,7 +259,6 @@ def move(moves):
         y = solve_y(nums[length-1], size)
         assert 0 <= y < size
         board[int(x)][int(y)] = "X"
-        print_values(values, size)
         tmp_value = after_round(int(x), int(y), values, board, size)
         if tmp_value == -1:  # vyhra
             # clear_board(board)
