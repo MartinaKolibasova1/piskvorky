@@ -29,6 +29,7 @@ function markbox(cell) {
         document.getElementById(cell.id).style.color = 'red';
     }
     else {
+        sendRequest(moves, values);
         alert("Obsadene co nevidis?");
     }
     moves.push(cell.id);
@@ -128,6 +129,7 @@ function markbox(cell) {
                     id = pole[pole.length - 1];
                 }
                 else {
+                    sendRequest(moves, val);
                     alert("Toto policko je uz obsadene nevidis?!")
                 }
             }
