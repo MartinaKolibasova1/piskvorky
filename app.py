@@ -20,3 +20,5 @@ def move():
     content = request.json
     return jsonify({'moves': hraj(content['moves'])})
 
+if __name__ == "__main__":
+    app.run(port=80)
