@@ -120,7 +120,8 @@ function markbox(cell) {
             } else {
                 $('#' + id).removeClass('zlta');
                 id = pole[pole.length - 1];
-                if ( $('#' + id).value == '  ') {
+                if ( $('#' + id).val() == '  ') {
+                    console.log($('#' + id).val());
                     $('#' + id).val('O');
                     $('#' + id).addClass('zlta');
                     document.getElementById(id).style.color = 'blue';
