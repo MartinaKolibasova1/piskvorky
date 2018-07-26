@@ -28,6 +28,9 @@ function markbox(cell) {
         cell.value = symbol;
         document.getElementById(cell.id).style.color = 'red';
     }
+    else {
+        alert("Obsadene co nevidis?");
+    }
     moves.push(cell.id);
     if (moves.length == 1) {
         var val = new Array(10);
@@ -67,6 +70,19 @@ function markbox(cell) {
                 setTimeout(function() {
                     switch (pole[length - 1]) {
                         case -1:
+                            moves = [];
+                            val = [];
+                            var val = new Array(10);
+                            for (var i = 0; i < 10; i++) {
+                                val[i] = new Array(10);
+                                for (var j = 0; j < 10; j++) {
+                                    val[i][j] = 0;
+                                }
+                            }
+                            sendRequest(moves, val);
+                            if (alert('Gratulujeme vyhral si!')) {
+                            } else window.location.reload();
+
                             break;
                         case -2:
                             console.log("Smola");
@@ -85,17 +101,34 @@ function markbox(cell) {
 
                             break;
                         case -3:
-                            alert('REMIZA');
+                            moves = [];
+                            val = [];
+                            var val = new Array(10);
+                            for (var i = 0; i < 10; i++) {
+                                val[i] = new Array(10);
+                                for (var j = 0; j < 10; j++) {
+                                    val[i][j] = 0;
+                                }
+                            }
+                            sendRequest(moves, val);
+                            if (alert('Smola REmiza!')) {
+                            } else window.location.reload();
+
                             break;
                     }
                 }, 500);
             } else {
                 $('#' + id).removeClass('zlta');
                 id = pole[pole.length - 1];
-                $('#' + id).val('O');
-                $('#' + id).addClass('zlta');
-                document.getElementById(id).style.color = 'blue';
-                id = pole[pole.length - 1];
+                if ( $('#' + id).value == '  ') {
+                    $('#' + id).val('O');
+                    $('#' + id).addClass('zlta');
+                    document.getElementById(id).style.color = 'blue';
+                    id = pole[pole.length - 1];
+                }
+                else {
+                    alert("Toto policko je uz obsadene nevidis?!")
+                }
             }
         })
         .fail(function(err) {
