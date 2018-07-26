@@ -1,7 +1,9 @@
 .button {
     background-color: antiquewhite;
     border-radius: 0px;
-    width: 30px;
+    width: 27px;
+    height: 27px;
+    box-shadow: lightgrey;
 }
 
 .tabulka {
