@@ -20,4 +20,3 @@ def move():
     content = request.json
     return jsonify({'moves': hraj(content['moves'])})
 
-
