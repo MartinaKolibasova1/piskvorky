@@ -35,7 +35,7 @@ def play():
         return render_template('index.html')
 
 
-@app.route("/moves", methods=['POST'])
+@app.route("/moves", methods=['GET', 'POST'])
 def move():
     content = request.json
     print(content)
