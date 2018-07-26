@@ -1,27 +1,39 @@
 import random
 
-""" # n*n velkost plochy
+""" 
+# n*n velkost plochy
        while True:
            try:
                size = int(input("Zadajte velkost plochy: "))
                break
            except ValueError:
                print("Zly vstup, skuste este raz")
-   """
-
-size = 10
-
-board = [[" " for x in range(size)] for y in range(size)]
-values = [[0 for x in range(size)] for y in range(size)]
+"""
 
 
-def clear_board(board):
+class Board:
+
+    def __init__(self, moves, size):
+        self.size = size
+        self.moves = moves
+        self.board = [[" " for x in range(size)] for y in range(size)]
+        length = len(self.moves)
+        for i in range(length):
+            x = solve_x(self.moves[i], self.size)
+            y = solve_y(self.moves[i], self.size)
+            if i % 2 == 0:
+                self.board[x][y] = "X"
+            else:
+                self.board[x][y] = "O"
+
+
+def clear_board(board, size):
     for i in range(size):
         for j in range(size):
             board[i][j] = " "
 
 
-def clear_values(values):
+def clear_values(values, size):
     for i in range(size):
         for j in range(size):
             values[i][j] = 0
@@ -42,6 +54,7 @@ def solve_y(index, size):
 
 
 def print_board(board, size):
+    """
     print(" ", end=" ")
     for i in range(size):
         print(i, " ", end=" ")
@@ -49,6 +62,7 @@ def print_board(board, size):
     for x in range(0, size):
         print(x, ' | '.join(board[x]))
         print("  -------------------------------------")
+    """
 
 
 def print_values(values, size):
@@ -56,7 +70,11 @@ def print_values(values, size):
         print(values[x])
 
 
-def first_init_values(size, values):
+def first_init_values():
+    size = 10
+
+    values = [[0 for x in range(size)] for y in range(size)]
+
     # rows and columns
     for i in range(size):
         for j in range(size):
@@ -78,6 +96,7 @@ def first_init_values(size, values):
                 for k in range(0, -5, -1):
                     values[i+l][j+k] += 10
                     l += 1
+    return values
 
 
 def calculate(tmp, board, size):
@@ -233,45 +252,47 @@ def after_round(x, y, values, board, size):
     return tmp_value
 
 
-first_init_values(size, values)
-
-
 def test_verify():  # aby sa zavolal test ked sa spusti verify_values ???
-    print(board)
+    # print(board)
     pass
 
 
-def move(moves):
+def move(moves, values):
+    size = 10
     nums = [int(x) for x in moves]
-
+    board = Board(nums, size)
+    vals = values
     length = len(nums)
     print("dlzka: ", length)
     print(nums)
 
     if length == 0:  # uz je koniec hry
-        clear_board(board)
-        clear_values(values)
+        clear_board(board.board, size)
+        clear_values(vals, size)
         nums = []
     else:
+        if length == 1:
+            vals = first_init_values()
+
         assert length % 2 == 1  # isiel clovek ma ist pocitac
         x = solve_x(nums[length-1], size)
         assert 0 <= x < size
         y = solve_y(nums[length-1], size)
         assert 0 <= y < size
-        board[int(x)][int(y)] = "X"
-        tmp_value = after_round(int(x), int(y), values, board, size)
+        board.board[int(x)][int(y)] = "X"
+        tmp_value = after_round(int(x), int(y), vals, board.board, size)
         if tmp_value == -1:  # vyhra
-            # clear_board(board)
+            # clear_board(board, size)
             nums.append(-1)
 
-        max_value = values[0][0]
+        max_value = vals[0][0]
         max_indices = []
         for i in range(size):
             for j in range(size):
-                if values[i][j] > max_value:
-                    max_value = values[i][j]
+                if vals[i][j] > max_value:
+                    max_value = vals[i][j]
                     max_indices = [solve_index(i, j, size)]
-                elif values[i][j] == max_value:
+                elif vals[i][j] == max_value:
                     max_indices.append(solve_index(i, j, size))
 
         rand_max_index = random.choice(max_indices)
@@ -282,17 +303,16 @@ def move(moves):
 
         if max_value == 0:
             print("REMIZA")
-            # clear_board(board)
+            # clear_board(board, size)
             nums.append(-3)  # remiza
         else:
-            board[x][y] = "O"
+            board.board[x][y] = "O"
             nums.append(solve_index(x, y, size))
 
-            tmp_value = after_round(int(x), int(y), values, board, size)
+            tmp_value = after_round(int(x), int(y), vals, board.board, size)
             if tmp_value == -2:  # prehra
-                # clear_board(board)
+                # clear_board(board, size)
                 nums.append(-2)
         print("pohyby: ", nums)
 
-    return nums
-
+    return nums, vals

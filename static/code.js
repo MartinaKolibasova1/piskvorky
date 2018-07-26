@@ -1,4 +1,5 @@
 var moves = [];
+var values = [];
 var symbol = 'X';
 var id = 0;
 
@@ -11,47 +12,75 @@ var id = 0;
         //, customer: window.loggedInCustomer // replace window.loggedInCustomer with id of your web site customer, e.g. "john.smith@gmail.com"
 });
 
-function sendRequest(moves){
+function sendRequest(moves, val){
             $.ajax({
                 type: 'POST',
                 url: '/moves',
                 headers: { 'Content-Type': 'application/json' },
-                data: JSON.stringify({ moves: moves }),
+                data: JSON.stringify({ moves: moves, values: val }),
                 dataType: 'json',
              })
 }
+
+
 function markbox(cell) {
     if (cell.value == '  ') {
         cell.value = symbol;
         document.getElementById(cell.id).style.color = 'red';
     }
     moves.push(cell.id);
+    if (moves.length == 1) {
+        var val = new Array(10);
+        for (var i = 0; i < 10; i++) {
+            val[i] = new Array(10);
+            for (var j = 0; j < 10; j++) {
+                val[i][j] = 0;
+            }
+        }
+        console.log("Values: ", val);
+    }
+
+
     $.ajax({
         type: 'POST',
         url: '/moves',
         headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify({ moves: moves }),
-        dataType: 'json',
+        data: JSON.stringify({ moves: moves, values: values}),
+        dataType: 'json'
     })
         .done(function(res) {
-            var pole = res.moves;
-            var length = res.moves.length;
+            var pole = res.moves[0];
+            var val = res.moves[1];
+            var length = res.moves[0].length;
+            console.log("RESPONSE:", res)
+            console.log("POLE", pole);
+            values = val;
             moves = pole;
+                console.log(pole[length - 1]);
             if (pole[length - 1] < 0) {
                 $('#' + id).removeClass('zlta');
                 id = pole[pole.length - 2];
                 $('#' + id).val('O');
                 document.getElementById(id).style.color = 'blue';
                 $('#' + id).addClass('zlta');
+
                 setTimeout(function() {
                     switch (pole[length - 1]) {
                         case -1:
                             break;
                         case -2:
-                        moves = [];
-                            sendRequest(moves)
+                            console.log("Smola");
+                            moves = [];
+                            val = [];
+                            var val = new Array(10);
+                            for (var i = 0; i < 10; i++) {
+                                val[i] = new Array(10);
+                                for (var j = 0; j < 10; j++) {
+                                    val[i][j] = 0;
+                                }
+                            }
+                            sendRequest(moves, val);
                             if (alert('Smola prehral si!')) {
-
                             } else window.location.reload();
 
                             break;

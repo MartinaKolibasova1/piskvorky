@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='code.js') }}"></script>
+    <script>
+        function redirect() {
+        var val = Array(10).fill(0);
+        $.ajax({
+            type: 'GET',
+            url: '/hraj',
+            headers: { 'Content-Type': 'application/json' },
+            data: {moves:moves, values: val}
+            dataType: 'json',
+        })
+    }
+
+    </script>
+</head>
+<body>
+<button onclick="redirect()">Hraj</button>
+
+</body>
+</html>
