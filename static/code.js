@@ -5,7 +5,7 @@ var id = 0;
 function sendRequest(moves){
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:5000/moves',
+                url: '/moves',
                 headers: { 'Content-Type': 'application/json' },
                 data: JSON.stringify({ moves: moves }),
                 dataType: 'json',
@@ -19,7 +19,7 @@ function markbox(cell) {
     moves.push(cell.id);
     $.ajax({
         type: 'POST',
-        url: 'http://localhost:5000/moves',
+        url: '/moves',
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify({ moves: moves }),
         dataType: 'json',
