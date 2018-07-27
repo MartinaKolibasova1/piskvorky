@@ -274,7 +274,7 @@ def move(moves, values):
         if length == 1:
             vals = first_init_values()
 
-        assert length % 2 == 1  # isiel clovek ma ist pocitac
+        #assert length % 2 == 1  # isiel clovek ma ist pocitac
         x = solve_x(nums[length-1], size)
         assert 0 <= x < size
         y = solve_y(nums[length-1], size)
